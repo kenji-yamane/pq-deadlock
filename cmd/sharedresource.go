@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/kenji-yamane/distributed-mutual-exclusion-sample/src"
-	"github.com/kenji-yamane/distributed-mutual-exclusion-sample/src/network"
+	"github.com/kenji-yamane/pq-deadlock/src"
+	"github.com/kenji-yamane/pq-deadlock/src/network"
 )
 
 func main() {

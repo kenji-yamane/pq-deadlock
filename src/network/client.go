@@ -2,7 +2,7 @@ package network
 
 import (
 	"fmt"
-	"github.com/kenji-yamane/distributed-mutual-exclusion-sample/src/customerror"
+	"github.com/kenji-yamane/pq-deadlock/src/customerror"
 	"net"
 )
 

@@ -3,8 +3,8 @@ package clock
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kenji-yamane/distributed-mutual-exclusion-sample/src/customerror"
-	"github.com/kenji-yamane/distributed-mutual-exclusion-sample/src/math"
+	"github.com/kenji-yamane/pq-deadlock/src/customerror"
+	"github.com/kenji-yamane/pq-deadlock/src/math"
 )
 
 type VectorClock struct {

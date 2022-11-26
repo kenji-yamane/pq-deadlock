@@ -3,8 +3,8 @@ package messages
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kenji-yamane/distributed-mutual-exclusion-sample/src/clock"
-	"github.com/kenji-yamane/distributed-mutual-exclusion-sample/src/customerror"
+	"github.com/kenji-yamane/pq-deadlock/src/clock"
+	"github.com/kenji-yamane/pq-deadlock/src/customerror"
 )
 
 type Message struct {

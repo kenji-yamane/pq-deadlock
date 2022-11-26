@@ -6,11 +6,11 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/kenji-yamane/distributed-mutual-exclusion-sample/src"
-	"github.com/kenji-yamane/distributed-mutual-exclusion-sample/src/clock"
-	"github.com/kenji-yamane/distributed-mutual-exclusion-sample/src/customerror"
-	"github.com/kenji-yamane/distributed-mutual-exclusion-sample/src/network"
-	"github.com/kenji-yamane/distributed-mutual-exclusion-sample/src/process/messages"
+	"github.com/kenji-yamane/pq-deadlock/src"
+	"github.com/kenji-yamane/pq-deadlock/src/clock"
+	"github.com/kenji-yamane/pq-deadlock/src/customerror"
+	"github.com/kenji-yamane/pq-deadlock/src/network"
+	"github.com/kenji-yamane/pq-deadlock/src/process/messages"
 )
 
 type Process struct {

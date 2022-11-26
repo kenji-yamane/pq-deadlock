@@ -6,10 +6,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/kenji-yamane/distributed-mutual-exclusion-sample/src"
-	"github.com/kenji-yamane/distributed-mutual-exclusion-sample/src/clock"
-	"github.com/kenji-yamane/distributed-mutual-exclusion-sample/src/customerror"
-	"github.com/kenji-yamane/distributed-mutual-exclusion-sample/src/process"
+	"github.com/kenji-yamane/pq-deadlock/src"
+	"github.com/kenji-yamane/pq-deadlock/src/clock"
+	"github.com/kenji-yamane/pq-deadlock/src/customerror"
+	"github.com/kenji-yamane/pq-deadlock/src/process"
 )
 
 func main() {

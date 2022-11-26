@@ -3,7 +3,7 @@ package clock
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kenji-yamane/distributed-mutual-exclusion-sample/src/math"
+	"github.com/kenji-yamane/pq-deadlock/src/math"
 )
 
 type ScalarClock struct {

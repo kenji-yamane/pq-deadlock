@@ -1,3 +1,3 @@
-module github.com/kenji-yamane/distributed-mutual-exclusion-sample
+module github.com/kenji-yamane/pq-deadlock
 
 go 1.17
