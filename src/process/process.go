@@ -90,11 +90,19 @@ func (p *Process) InterpretCommand(cmdString string) {
 	switch cmd {
 	case messages.Ask:
 		reqCmd := messages.ParseRequestCommand(cmdString, len(p.ports))
+		if reqCmd == nil {
+			fmt.Println("invalid ask command, please retry")
+			break
+		}
 		p.clock.InternalEvent()
 		p.requestPOutOfQ(reqCmd)
 	case messages.Liberate:
 		p.clock.InternalEvent()
 		libCmd := messages.ParseLiberateCommand(cmdString, len(p.ports))
+		if libCmd == nil {
+			fmt.Println("invalid liberate command, please retry")
+			break
+		}
 		p.replyToParents(libCmd)
 	case messages.Detect:
 		p.clock.InternalEvent()
