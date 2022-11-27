@@ -8,28 +8,22 @@ import (
 )
 
 type Message struct {
-	SenderId int    `json:"id"`
-	Text     string `json:"text"`
-	ClockStr string `json:"clock_str"`
+	SenderId    int     `json:"id"`
+	Type        string  `json:"type"`
+	ClockStr    string  `json:"clock_str"`
+	Weight      float64 `json:"weight"`
+	InitiatorId int     `json:"initiator_id"`
+	InitiatedAt int     `json:"initiated_at"`
 }
 
-func BuildConsumeMessage(myId int, c clock.LogicalClock) string {
-	return buildMessage(myId, c, Consume)
-}
-
-func BuildReplyMessage(myId int, c clock.LogicalClock) string {
-	return buildMessage(myId, c, Reply)
-}
-
-func BuildRequestMessage(myId int, c clock.LogicalClock) string {
-	return buildMessage(myId, c, Request)
-}
-
-func buildMessage(myId int, c clock.LogicalClock, messageType MessageType) string {
+func BuildMessage(myId int, c clock.LogicalClock, messageType MessageType, weight float64, initiatorId int, initiatedAt int) string {
 	m := Message{
-		SenderId: myId,
-		Text:     messageType.String(),
-		ClockStr: c.GetClockStr(),
+		SenderId:    myId,
+		Type:        messageType.String(),
+		ClockStr:    c.GetClockStr(),
+		Weight:      weight,
+		InitiatorId: initiatorId,
+		InitiatedAt: initiatedAt,
 	}
 	mStr, err := json.MarshalIndent(m, "", "\t")
 	if err != nil {

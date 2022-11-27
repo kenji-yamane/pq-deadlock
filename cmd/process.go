@@ -26,7 +26,6 @@ func main() {
 		myId,
 		ports,
 		clock.NewScalarClock(myId),
-		process.NewReplyManager(len(ports)),
 	)
 
 	terminalCh := make(chan string)

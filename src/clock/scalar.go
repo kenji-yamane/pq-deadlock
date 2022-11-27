@@ -23,6 +23,10 @@ func (c *ScalarClock) InternalEvent() {
 	c.echoClock()
 }
 
+func (c *ScalarClock) GetTicks() int {
+	return c.ticks
+}
+
 func (c *ScalarClock) ExternalEvent(externalClockStr string) {
 	externalClock, err := c.parse(externalClockStr)
 	if err != nil {

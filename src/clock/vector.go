@@ -24,6 +24,10 @@ func (c *VectorClock) InternalEvent() {
 	c.echoClock()
 }
 
+func (c *VectorClock) GetTicks() int {
+	return c.ticks[c.id-1]
+}
+
 func (c *VectorClock) ExternalEvent(externalClockStr string) {
 	externalClock, err := c.parse(externalClockStr)
 	if err != nil {
