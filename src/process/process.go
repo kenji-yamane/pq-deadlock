@@ -208,6 +208,7 @@ func (p *Process) snapshotInitiate() {
 }
 
 func (p *Process) sendMessage(outId int, messageType messages.MessageType, weight float64, initId int, initiatedAt int) {
+	fmt.Printf("sending message %v from %v to %v\n", messageType, p.id, outId)
 	if outId == p.id {
 		switch messageType {
 		case messages.Short:

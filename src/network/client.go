@@ -24,6 +24,6 @@ func UdpSend(conn *net.UDPConn, msg string) {
 	if err != nil {
 		fmt.Println(msg, err)
 	} else {
-		fmt.Println("sending message: ", msg)
+		//fmt.Println("sending message: ", msg)
 	}
 }

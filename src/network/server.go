@@ -21,13 +21,13 @@ func Serve(ch chan string, port string) {
 
 	buf := make([]byte, 1024)
 	for {
-		n, addr, err := ServerConn.ReadFromUDP(buf)
+		n, _, err := ServerConn.ReadFromUDP(buf)
 		if err != nil {
 			fmt.Println("Error on server: ", err)
 			continue
 		}
 		msg := string(buf[0:n])
-		fmt.Println("received ", msg, " from ", addr)
+		//fmt.Println("received ", msg, " from ", addr)
 		ch <- msg
 	}
 }
