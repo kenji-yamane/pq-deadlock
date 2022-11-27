@@ -4,15 +4,15 @@ CMD:=./cmd
 BIN:=./bin
 
 PROCESS:=process
-SIMULATE_CYCLE:=simulate-cycle
+PUPPETEER:=puppeteer
 
 build:
 	go build -o $(BIN)/$(PROCESS) $(CMD)/$(PROCESS).go
 
-simulate-cycle:
-	go build -o $(BIN)/$(SIMULATE_CYCLE) $(CMD)/puppeteer.go
+build-pup:
+	go build -o $(BIN)/$(PUPPETEER) $(CMD)/puppeteer.go
 
-build-all: build simulate-cycle
+build-all: build build-pup
 
 THREE_SIMULATOR=10004 10003 10002
 
@@ -26,4 +26,4 @@ p3:
 	$(BIN)/$(PROCESS) 3 $(THREE_SIMULATOR)
 
 pup:
-	$(BIN)/$(SIMULATE_CYCLE) $(THREE_SIMULATOR)
+	$(BIN)/$(PUPPETEER) ./fxt/cycle-three.txt $(THREE_SIMULATOR)
