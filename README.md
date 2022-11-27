@@ -18,7 +18,7 @@ make p3
 ```
 On three different terminals.
 
-Then, use the comands for send REQUEST and REPLY messages on each terminal for design a situation
+Then, use the comands for send REQUEST and REPLY messages on each terminal for design a situation  
 REQUEST:  
 ```bash
 ask p_number list_of_nodes
