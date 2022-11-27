@@ -25,5 +25,8 @@ p2:
 p3:
 	$(BIN)/$(PROCESS) 3 $(THREE_SIMULATOR)
 
-pup:
+pup-cycle:
+	$(BIN)/$(PUPPETEER) ./fxt/cycle-three.txt $(THREE_SIMULATOR)
+
+pup-hirata-and:
 	$(BIN)/$(PUPPETEER) ./fxt/cycle-three.txt $(THREE_SIMULATOR)
