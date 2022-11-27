@@ -1,6 +1,6 @@
-# diffused-mutex
+# P-out-of-Q model deadlock
 
-Implementation of the Ricart-Agrawala algorithm on a simulation of a distributed system with ipc
+Implementation of the Kshemkalyani-Singhal Algorithm for P-out-of-Q Model on a simulation of a distributed system with ipc
 
 ## Instructions
 
@@ -9,8 +9,7 @@ To build all targets:
 make build-all
 ```
 
-Then, to execute a simulation of three different processes
-attempting to access a shared resource, first instantiate
+Then, to execute a simulation of three different processes, first instantiate
 the processes simulators:
 ```bash
 make p1
@@ -19,9 +18,19 @@ make p3
 ```
 On three different terminals.
 
-Then, instantiate the shared resource simulator:
+Then, use the comands for send REQUEST and REPLY messages on each terminal for design a situation
+REQUEST:
 ```bash
-make cs
+ask p_number list_of_nodes
+```
+REPLY:
+```bash
+liberate parent_number
+```
+
+To detect a deadlock, choose a terminal, then:
+```bash
+detect
 ```
 
 In case you want to build your own simulation with a different
