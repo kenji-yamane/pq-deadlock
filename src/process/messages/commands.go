@@ -1,7 +1,6 @@
 package messages
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 )
@@ -26,7 +25,6 @@ func IdentifyCommand(command string) CommandType {
 func ParseRequestCommand(command string, numPorts int) *RequestCommand {
 	req := &RequestCommand{ChildIds: make([]int, 0)}
 	nums := strings.Split(command[len(string(Ask))+1:], " ")
-	fmt.Println(nums)
 	for idx, numStr := range nums {
 		num, err := strconv.Atoi(numStr)
 		if err != nil {
@@ -54,6 +52,9 @@ type LiberateCommand struct {
 
 func ParseLiberateCommand(command string, numPorts int) *LiberateCommand {
 	cmd := &LiberateCommand{LiberateAll: true, ParentIds: make([]int, 0)}
+	if len(command) == len(string(Liberate)) {
+		return cmd
+	}
 	nums := strings.Split(command[len(string(Liberate))+1:], " ")
 	for _, numStr := range nums {
 		cmd.LiberateAll = false

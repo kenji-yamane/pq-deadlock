@@ -22,12 +22,14 @@ func Contains(elems []int, i int) bool {
 	}
 	return false
 }
+func RemoveIndex(s []int, index int) []int {
+	return append(s[:index], s[index+1:]...)
+}
 
 func RemoveFrom(elems []int, in int) []int {
 	for index, value := range elems {
 		if in == value {
-			elems[index] = elems[len(elems)-1]
-			return elems[:len(elems)-1]
+			return RemoveIndex(elems, index)
 		}
 	}
 

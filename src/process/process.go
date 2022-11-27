@@ -97,7 +97,6 @@ func (p *Process) InterpretCommand(cmdString string) {
 		p.clock.InternalEvent()
 		p.requestPOutOfQ(reqCmd)
 	case messages.Liberate:
-		p.clock.InternalEvent()
 		libCmd := messages.ParseLiberateCommand(cmdString, len(p.ports))
 		if libCmd == nil {
 			fmt.Println("invalid liberate command, please retry")
@@ -105,7 +104,6 @@ func (p *Process) InterpretCommand(cmdString string) {
 		}
 		p.replyToParents(libCmd)
 	case messages.Detect:
-		p.clock.InternalEvent()
 		p.snapshotInitiate()
 	default:
 		fmt.Println("invalid command, ignoring...")
@@ -148,12 +146,9 @@ func (p *Process) InterpretMessage(msg string) {
 	switch messages.MessageType(parsedMsg.Type) {
 	case messages.Request:
 		p.processRequest(parsedMsg)
-		p.clock.ExternalEvent(parsedMsg.ClockStr)
 	case messages.Reply:
 		p.processReply(parsedMsg)
-		p.clock.ExternalEvent(parsedMsg.ClockStr)
 	case messages.Cancel:
-		p.clock.ExternalEvent(parsedMsg.ClockStr)
 	case messages.Flood:
 		p.processFlood(parsedMsg.SenderId, parsedMsg.InitiatorId, parsedMsg.InitiatedAt, parsedMsg.Weight)
 	case messages.Echo:
@@ -208,6 +203,15 @@ func (p *Process) snapshotInitiate() {
 }
 
 func (p *Process) sendMessage(outId int, messageType messages.MessageType, weight float64, initId int, initiatedAt int) {
+	if outId == p.id {
+		switch messageType {
+		case messages.Short:
+			p.processShort(initId, initiatedAt, weight)
+			return
+		default:
+			fmt.Printf("message received to myself: %v", messageType)
+		}
+	}
 	network.UdpSend(p.connections[outId], messages.BuildMessage(p.id, p.clock, messageType, weight, initId, initiatedAt))
 }
 
@@ -247,13 +251,10 @@ func (p *Process) processFlood(j int, init int, initiatedAt int, weight float64)
 		}
 
 		if snapshot.blocked == true {
-
 			if !math.Contains(snapshot.in, j) {
 				snapshot.in = append(snapshot.in, j)
 			}
-
 			p.sendMessage(init, messages.Short, weight, init, initiatedAt)
-
 		}
 
 	}
