@@ -9,10 +9,7 @@ SHARED_RESOURCE:=sharedresource
 build:
 	go build -o $(BIN)/$(PROCESS) $(CMD)/$(PROCESS).go
 
-build-cs:
-	go build -o $(BIN)/$(SHARED_RESOURCE) $(CMD)/$(SHARED_RESOURCE).go
-
-build-all: build build-cs
+build-all: build
 
 THREE_SIMULATOR=10004 10003 10002
 
