@@ -4,12 +4,15 @@ CMD:=./cmd
 BIN:=./bin
 
 PROCESS:=process
-SHARED_RESOURCE:=sharedresource
+SIMULATE_CYCLE:=simulate-cycle
 
 build:
 	go build -o $(BIN)/$(PROCESS) $(CMD)/$(PROCESS).go
 
-build-all: build
+simulate-cycle:
+	go build -o $(BIN)/$(SIMULATE_CYCLE) $(CMD)/puppeteer.go
+
+build-all: build simulate-cycle
 
 THREE_SIMULATOR=10004 10003 10002
 
@@ -22,5 +25,5 @@ p2:
 p3:
 	$(BIN)/$(PROCESS) 3 $(THREE_SIMULATOR)
 
-cs:
-	$(BIN)/$(SHARED_RESOURCE)
+pup:
+	$(BIN)/$(SIMULATE_CYCLE) $(THREE_SIMULATOR)

@@ -2,6 +2,7 @@ package process
 
 import (
 	"fmt"
+	"github.com/kenji-yamane/pq-deadlock/src"
 	"github.com/kenji-yamane/pq-deadlock/src/clock"
 	"github.com/kenji-yamane/pq-deadlock/src/customerror"
 	"github.com/kenji-yamane/pq-deadlock/src/math"
@@ -143,7 +144,11 @@ func (p *Process) InterpretMessage(msg string) {
 		return
 	}
 
-	switch messages.MessageType(parsedMsg.Type) {
+	if parsedMsg.SenderId == src.PuppeteerId {
+		p.InterpretCommand(parsedMsg.Text)
+		return
+	}
+	switch messages.MessageType(parsedMsg.Text) {
 	case messages.Request:
 		p.processRequest(parsedMsg)
 	case messages.Reply:

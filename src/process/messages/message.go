@@ -9,7 +9,7 @@ import (
 
 type Message struct {
 	SenderId    int     `json:"id"`
-	Type        string  `json:"type"`
+	Text        string  `json:"type"`
 	ClockStr    string  `json:"clock_str"`
 	Weight      float64 `json:"weight"`
 	InitiatorId int     `json:"initiator_id"`
@@ -19,7 +19,7 @@ type Message struct {
 func BuildMessage(myId int, c clock.LogicalClock, messageType MessageType, weight float64, initiatorId int, initiatedAt int) string {
 	m := Message{
 		SenderId:    myId,
-		Type:        messageType.String(),
+		Text:        messageType.String(),
 		ClockStr:    c.GetClockStr(),
 		Weight:      weight,
 		InitiatorId: initiatorId,

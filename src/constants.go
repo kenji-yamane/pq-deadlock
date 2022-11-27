@@ -1,5 +1,5 @@
 package src
 
 const (
-	SharedResourcePort = "10001"
+	PuppeteerId int = -1
 )
