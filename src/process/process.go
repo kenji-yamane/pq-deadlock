@@ -133,20 +133,22 @@ func (p *Process) InterpretMessage(msg string) {
 		fmt.Println("invalid message, ignoring...")
 		return
 	}
-	p.clock.ExternalEvent(parsedMsg.ClockStr)
 
 	switch messages.MessageType(parsedMsg.Type) {
 	case messages.Request:
 		p.processRequest(parsedMsg)
+		p.clock.ExternalEvent(parsedMsg.ClockStr)
 	case messages.Reply:
 		p.processReply(parsedMsg)
+		p.clock.ExternalEvent(parsedMsg.ClockStr)
+	case messages.Cancel:
+		p.clock.ExternalEvent(parsedMsg.ClockStr)
 	case messages.Flood:
 		p.processFlood(parsedMsg.SenderId, parsedMsg.InitiatorId, parsedMsg.InitiatedAt, parsedMsg.Weight)
 	case messages.Echo:
 		p.processEcho(parsedMsg.SenderId, parsedMsg.InitiatorId, parsedMsg.InitiatedAt, parsedMsg.Weight)
 	case messages.Short:
 		p.processShort(parsedMsg.SenderId, parsedMsg.InitiatedAt, parsedMsg.Weight)
-	case messages.Cancel:
 	default:
 		fmt.Println("invalid message, ignoring...")
 	}
