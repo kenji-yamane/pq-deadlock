@@ -13,29 +13,59 @@ import (
 	"github.com/kenji-yamane/pq-deadlock/src/process/messages"
 )
 
+type snapshotRecord struct {
+	out     []int
+	in      []int
+	time    int
+	blocked bool
+	p       int
+}
+
+type localSnapshot struct {
+	records map[int]snapshotRecord
+}
+
 type Process struct {
-	id           int
-	ports        []string
-	state        State
-	clock        clock.LogicalClock
-	lastRequest  string
-	replyManager *ReplyManager
-	connections  map[int]*net.UDPConn
-	csConn       *net.UDPConn
+	id          int
+	ports       []string
+	wait        bool
+	lastBlocked int
+	in          []int
+	out         []int
+	p           int
+	weight      float64
+	snapshot    localSnapshot
+	clock       clock.LogicalClock
+	connections map[int]*net.UDPConn
 }
 
 func NewProcess(
 	id int,
 	ports []string,
 	clock clock.LogicalClock,
-	replyManager *ReplyManager,
 ) *Process {
 	p := &Process{
-		id:           id,
-		ports:        ports,
-		state:        Released,
-		clock:        clock,
-		replyManager: replyManager,
+		id:          id,
+		ports:       ports,
+		wait:        false,
+		lastBlocked: -1,
+		in:          make([]int, 0),
+		out:         make([]int, 0),
+		p:           0,
+		weight:      1.0,
+		snapshot: localSnapshot{
+			records: make(map[int]snapshotRecord, 0),
+		},
+		clock: clock,
+	}
+	for i := 0; i <= len(ports); i++ {
+		p.snapshot.records[i] = snapshotRecord{
+			in:      make([]int, 0),
+			out:     make([]int, 0),
+			time:    0,
+			blocked: false,
+			p:       0,
+		}
 	}
 	p.initConnections()
 	return p
