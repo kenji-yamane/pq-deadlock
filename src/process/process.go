@@ -90,11 +90,14 @@ func (p *Process) InterpretCommand(cmdString string) {
 	switch cmd {
 	case messages.Ask:
 		reqCmd := messages.ParseRequestCommand(cmdString, len(p.ports))
+		p.clock.InternalEvent()
 		p.requestPOutOfQ(reqCmd)
 	case messages.Liberate:
+		p.clock.InternalEvent()
 		libCmd := messages.ParseLiberateCommand(cmdString, len(p.ports))
 		p.replyToParents(libCmd)
 	case messages.Detect:
+		p.clock.InternalEvent()
 		p.snapshotInitiate()
 	default:
 		fmt.Println("invalid command, ignoring...")
