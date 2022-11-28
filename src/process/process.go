@@ -228,7 +228,6 @@ func (p *Process) processFlood(j int, init int, initiatedAt int, weight float64)
 		snapshot.out = p.out
 		snapshot.in = make([]int, 0)
 		snapshot.in = append(snapshot.in, j)
-		fmt.Println("Setando  blocked")
 		snapshot.blocked = p.wait
 		snapshot.time = initiatedAt
 		if p.wait {
@@ -241,7 +240,6 @@ func (p *Process) processFlood(j int, init int, initiatedAt int, weight float64)
 		if p.wait == false {
 			snapshot.replies = 0
 			p.sendMessage(j, messages.Echo, weight, init, initiatedAt)
-			fmt.Println("cond false")
 			snapshot.in = math.RemoveFrom(snapshot.in, j)
 		}
 
@@ -288,7 +286,6 @@ func (p *Process) processEcho(j int, init int, initiatedAt int, weight float64) 
 	}
 
 	if snapshot.time == initiatedAt {
-		fmt.Println("remove cond echo")
 		snapshot.out = math.RemoveFrom(snapshot.out, j)
 		if snapshot.blocked == false {
 			p.sendMessage(init, messages.Short, weight, init, initiatedAt)
@@ -296,11 +293,10 @@ func (p *Process) processEcho(j int, init int, initiatedAt int, weight float64) 
 		if snapshot.blocked {
 			snapshot.replies--
 			if snapshot.replies == 0 {
-				fmt.Println("SETANDO FALSO")
 				snapshot.blocked = false
 
 				if init == p.id {
-					fmt.Println("No deadlock, we rock! :)") // TO DO fazer o que aqui?
+					fmt.Println("No deadlock, we rock! :)")
 					return
 				}
 
@@ -323,7 +319,6 @@ func (p *Process) processShort(init int, initiatedAt int, weight float64) {
 	snapshot := p.snapshot.records[init]
 
 	if initiatedAt < p.lastBlocked {
-		fmt.Println("Short - cond1")
 		return
 	}
 
@@ -333,12 +328,10 @@ func (p *Process) processShort(init int, initiatedAt int, weight float64) {
 	}
 
 	if initiatedAt == p.lastBlocked && snapshot.blocked == false {
-		fmt.Println("Short - cond3")
 		return
 	}
 
 	if initiatedAt == p.lastBlocked && snapshot.blocked {
-		fmt.Println("Short - cond4")
 		p.weight += weight
 	}
 
