@@ -20,7 +20,7 @@ func NewScalarClock(id int) LogicalClock {
 
 func (c *ScalarClock) InternalEvent() {
 	c.ticks++
-	c.echoClock()
+	//c.echoClock()
 }
 
 func (c *ScalarClock) GetTicks() int {
@@ -34,7 +34,7 @@ func (c *ScalarClock) ExternalEvent(externalClockStr string) {
 		return
 	}
 	c.ticks = math.Max(externalClock.Ticks, c.ticks) + 1
-	c.echoClock()
+	//c.echoClock()
 }
 
 type scalarClockSerializer struct {

@@ -27,7 +27,6 @@ func RemoveIndex(s []int, index int) []int {
 }
 
 func RemoveFrom(elems []int, in int) []int {
-	fmt.Printf("deleting: %v from %v\n", in, elems)
 	for index, value := range elems {
 		if in == value {
 			return RemoveIndex(elems, index)
