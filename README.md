@@ -12,9 +12,9 @@ make build-all
 Then, to execute a simulation of three different processes, first instantiate
 the processes simulators:
 ```bash
-make p1
-make p2
-make p3
+make p1-3
+make p2-3
+make p3-3
 ```
 On three different terminals.
 
