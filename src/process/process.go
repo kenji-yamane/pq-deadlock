@@ -95,7 +95,7 @@ func (p *Process) InterpretCommand(cmdString string) {
 			fmt.Println("invalid ask command, please retry")
 			break
 		}
-		p.clock.InternalEvent()
+		p.InternalEvent()
 		p.requestPOutOfQ(reqCmd)
 	case messages.Liberate:
 		libCmd := messages.ParseLiberateCommand(cmdString, len(p.ports))
@@ -103,11 +103,20 @@ func (p *Process) InterpretCommand(cmdString string) {
 			fmt.Println("invalid liberate command, please retry")
 			break
 		}
+		p.InternalEvent()
 		p.replyToParents(libCmd)
 	case messages.Detect:
+		p.InternalEvent()
 		p.snapshotInitiate()
 	default:
 		fmt.Println("invalid command, ignoring...")
+	}
+}
+
+func (p *Process) InternalEvent() {
+	p.clock.InternalEvent()
+	if p.replies > 0 {
+		p.lastBlocked = p.clock.GetTicks()
 	}
 }
 
@@ -150,10 +159,13 @@ func (p *Process) InterpretMessage(msg string) {
 	}
 	switch messages.MessageType(parsedMsg.Text) {
 	case messages.Request:
+		p.ExternalEvent(parsedMsg.ClockStr)
 		p.processRequest(parsedMsg)
 	case messages.Reply:
+		p.ExternalEvent(parsedMsg.ClockStr)
 		p.processReply(parsedMsg)
 	case messages.Cancel:
+		p.ExternalEvent(parsedMsg.ClockStr)
 	case messages.Flood:
 		p.processFlood(parsedMsg.SenderId, parsedMsg.InitiatorId, parsedMsg.InitiatedAt, parsedMsg.Weight)
 	case messages.Echo:
@@ -162,6 +174,13 @@ func (p *Process) InterpretMessage(msg string) {
 		p.processShort(parsedMsg.InitiatorId, parsedMsg.InitiatedAt, parsedMsg.Weight)
 	default:
 		fmt.Println("invalid message, ignoring...")
+	}
+}
+
+func (p *Process) ExternalEvent(clockStr string) {
+	p.clock.ExternalEvent(clockStr)
+	if p.replies > 0 {
+		p.lastBlocked = p.clock.GetTicks()
 	}
 }
 
