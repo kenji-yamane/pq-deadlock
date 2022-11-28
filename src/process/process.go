@@ -131,7 +131,7 @@ func (p *Process) replyToParents(cmd *messages.LiberateCommand) {
 	}
 	for _, parentId := range cmd.ParentIds {
 		if math.Contains(p.in, parentId) {
-			math.RemoveFrom(p.in, parentId)
+			p.in = math.RemoveFrom(p.in, parentId)
 			p.sendMessage(parentId, messages.Reply, 0, p.id, p.clock.GetTicks())
 		}
 	}
@@ -175,7 +175,7 @@ func (p *Process) processReply(msg messages.Message) {
 	if !math.Contains(p.out, msg.SenderId) {
 		return
 	}
-	math.RemoveFrom(p.out, msg.SenderId)
+	p.out = math.RemoveFrom(p.out, msg.SenderId)
 	p.replies--
 	if p.replies > 0 {
 		return
