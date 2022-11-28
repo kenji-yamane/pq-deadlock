@@ -221,6 +221,10 @@ func (p *Process) snapshotInitiate() {
 	p.snapshot.records[p.id].in = []int{}
 	p.snapshot.records[p.id].replies = p.replies
 
+	if p.replies == 0 {
+		p.declareNoDeadlock()
+		return
+	}
 	for _, outId := range p.out {
 		p.sendMessage(outId, messages.Flood, 1.0/float64(len(p.out)), p.id, p.clock.GetTicks())
 	}
@@ -315,7 +319,7 @@ func (p *Process) processEcho(j int, init int, initiatedAt int, weight float64) 
 				snapshot.blocked = false
 
 				if init == p.id {
-					fmt.Println("No deadlock, we rock! :)")
+					p.declareNoDeadlock()
 					return
 				}
 
@@ -331,6 +335,10 @@ func (p *Process) processEcho(j int, init int, initiatedAt int, weight float64) 
 		}
 		return
 	}
+}
+
+func (p *Process) declareNoDeadlock() {
+	fmt.Println("No deadlock, we rock! :)")
 }
 
 func (p *Process) processShort(init int, initiatedAt int, weight float64) {
