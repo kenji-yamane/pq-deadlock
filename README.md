@@ -67,3 +67,5 @@ is directed, the second is the argument in itself, and the third
 is the number of milliseconds you want the program to wait after
 executing the command.
 
+There are four pre-built examples of WFG in the folder `/fxt`,
+which might be useful to quickly build a WFG for testing.
