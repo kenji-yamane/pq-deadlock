@@ -16,17 +16,34 @@ build-all: build build-pup
 
 THREE_SIMULATOR=10004 10003 10002
 
-p1:
+FOUR_SIMULATOR=10005 10004 10003 10002
+
+p1-3:
 	$(BIN)/$(PROCESS) 1 $(THREE_SIMULATOR)
 
-p2:
+p2-3:
 	$(BIN)/$(PROCESS) 2 $(THREE_SIMULATOR)
 
-p3:
+p3-3:
 	$(BIN)/$(PROCESS) 3 $(THREE_SIMULATOR)
+
+p1-4:
+	$(BIN)/$(PROCESS) 1 $(FOUR_SIMULATOR)
+
+p2-4:
+	$(BIN)/$(PROCESS) 2 $(FOUR_SIMULATOR)
+
+p3-4:
+	$(BIN)/$(PROCESS) 3 $(FOUR_SIMULATOR)
+
+p4-4:
+	$(BIN)/$(PROCESS) 4 $(FOUR_SIMULATOR)
 
 pup-cycle:
 	$(BIN)/$(PUPPETEER) ./fxt/cycle-three.txt $(THREE_SIMULATOR)
 
 pup-hirata-and:
-	$(BIN)/$(PUPPETEER) ./fxt/cycle-three.txt $(THREE_SIMULATOR)
+	$(BIN)/$(PUPPETEER) ./fxt/hirata-wfg-4-p-and.txt $(FOUR_SIMULATOR)
+
+pup-hirata-or:
+	$(BIN)/$(PUPPETEER) ./fxt/hirata-wfg-4-p-or.txt $(FOUR_SIMULATOR)

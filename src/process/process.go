@@ -159,7 +159,7 @@ func (p *Process) InterpretMessage(msg string) {
 	case messages.Echo:
 		p.processEcho(parsedMsg.SenderId, parsedMsg.InitiatorId, parsedMsg.InitiatedAt, parsedMsg.Weight)
 	case messages.Short:
-		p.processShort(parsedMsg.SenderId, parsedMsg.InitiatedAt, parsedMsg.Weight)
+		p.processShort(parsedMsg.InitiatorId, parsedMsg.InitiatedAt, parsedMsg.Weight)
 	default:
 		fmt.Println("invalid message, ignoring...")
 	}
@@ -208,7 +208,7 @@ func (p *Process) snapshotInitiate() {
 }
 
 func (p *Process) sendMessage(outId int, messageType messages.MessageType, weight float64, initId int, initiatedAt int) {
-	fmt.Printf("sending message %v from %v to %v\n", messageType, p.id, outId)
+	fmt.Printf("sending message %v from %v to %v - initId: %v\n", messageType, p.id, outId, initId)
 	if outId == p.id {
 		switch messageType {
 		case messages.Short:
@@ -228,7 +228,9 @@ func (p *Process) processFlood(j int, init int, initiatedAt int, weight float64)
 		snapshot.out = p.out
 		snapshot.in = make([]int, 0)
 		snapshot.in = append(snapshot.in, j)
+		fmt.Println("Setando  blocked")
 		snapshot.blocked = p.wait
+		snapshot.time = initiatedAt
 		if p.wait {
 			snapshot.replies = p.replies
 			for _, outId := range p.out {
@@ -239,16 +241,21 @@ func (p *Process) processFlood(j int, init int, initiatedAt int, weight float64)
 		if p.wait == false {
 			snapshot.replies = 0
 			p.sendMessage(j, messages.Echo, weight, init, initiatedAt)
+			fmt.Println("cond false")
 			snapshot.in = math.RemoveFrom(snapshot.in, j)
 		}
+
+		return
 	}
 
 	if snapshot.time < initiatedAt && !math.Contains(p.in, j) {
 		p.sendMessage(j, messages.Echo, weight, init, initiatedAt)
+		return
 	}
 
 	if snapshot.time == initiatedAt && !math.Contains(p.in, j) {
 		p.sendMessage(j, messages.Echo, weight, init, initiatedAt)
+		return
 	}
 
 	if snapshot.time == initiatedAt && math.Contains(p.in, j) {
@@ -263,6 +270,7 @@ func (p *Process) processFlood(j int, init int, initiatedAt int, weight float64)
 			p.sendMessage(init, messages.Short, weight, init, initiatedAt)
 		}
 
+		return
 	}
 
 }
@@ -280,6 +288,7 @@ func (p *Process) processEcho(j int, init int, initiatedAt int, weight float64) 
 	}
 
 	if snapshot.time == initiatedAt {
+		fmt.Println("remove cond echo")
 		snapshot.out = math.RemoveFrom(snapshot.out, j)
 		if snapshot.blocked == false {
 			p.sendMessage(init, messages.Short, weight, init, initiatedAt)
@@ -287,6 +296,7 @@ func (p *Process) processEcho(j int, init int, initiatedAt int, weight float64) 
 		if snapshot.blocked {
 			snapshot.replies--
 			if snapshot.replies == 0 {
+				fmt.Println("SETANDO FALSO")
 				snapshot.blocked = false
 
 				if init == p.id {
@@ -304,13 +314,16 @@ func (p *Process) processEcho(j int, init int, initiatedAt int, weight float64) 
 				p.sendMessage(init, messages.Short, weight, init, initiatedAt)
 			}
 		}
+		return
 	}
 }
 
 func (p *Process) processShort(init int, initiatedAt int, weight float64) {
+	fmt.Printf("init: %v\n", init)
 	snapshot := p.snapshot.records[init]
 
 	if initiatedAt < p.lastBlocked {
+		fmt.Println("Short - cond1")
 		return
 	}
 
@@ -320,10 +333,12 @@ func (p *Process) processShort(init int, initiatedAt int, weight float64) {
 	}
 
 	if initiatedAt == p.lastBlocked && snapshot.blocked == false {
+		fmt.Println("Short - cond3")
 		return
 	}
 
 	if initiatedAt == p.lastBlocked && snapshot.blocked {
+		fmt.Println("Short - cond4")
 		p.weight += weight
 	}
 
