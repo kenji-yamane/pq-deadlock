@@ -315,7 +315,6 @@ func (p *Process) processEcho(j int, init int, initiatedAt int, weight float64) 
 }
 
 func (p *Process) processShort(init int, initiatedAt int, weight float64) {
-	fmt.Printf("init: %v\n", init)
 	snapshot := p.snapshot.records[init]
 
 	if initiatedAt < p.lastBlocked {
